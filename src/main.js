@@ -29,6 +29,8 @@ Vue.use(ElementUI)
 
 import './less/index.less'
 
+import './assets/css/style.css'
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

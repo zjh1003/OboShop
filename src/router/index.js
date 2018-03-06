@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from '../components/account/login/Login.vue'
+import Login from '../components/account/Login.vue'
+import Register from '../components/account/Register.vue'
 import Shop from '../components/shop/Shop.vue'
 import List from '../components/shop/goods/List.vue'
 import Detail from '../components/shop/goods/Detail.vue'
@@ -28,9 +29,15 @@ const shoppingcart = [
   { name:'shoppingcart', path:'shoppingcart', component:Shoppingcart }
 ]
 
+// const account = [
+//   { name:'login', path:'login', component:Login },
+//   { name:'register', path:'register', component:Register }
+// ]
+
 export default new Router({
   routes: [
-      { name: 'login', path: '/login', component:Login },
+      { name: 'login', path:'/login', component: Login },
+      { name: 'register', path:'/register', component: Register },
       { name: 'shop', path: '/shop', component:Shop ,children:[...goods,...pay,...shoppingcart]}
   ]
 })
