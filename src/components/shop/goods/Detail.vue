@@ -20,7 +20,33 @@
                         <div class="goods-box clearfix">
                             <!--商品图片-->
                             <div class="pic-box">
-
+                                <div class="magnifier" id="magnifier1">
+                                    <div class="magnifier-container">
+                                        <div class="images-cover"></div>
+                                        <!--当前图片显示容器-->
+                                        <div class="move-view"></div>
+                                        <!--跟随鼠标移动的盒子-->
+                                    </div>
+                                    <div class="magnifier-assembly">
+                                        <div class="magnifier-btn">
+                                            <span class="magnifier-btn-left">&lt;</span>
+                                            <span class="magnifier-btn-right">&gt;</span>
+                                        </div>
+                                        <!--按钮组-->
+                                        <div class="magnifier-line">
+                                            <ul class="clearfix animation03">
+                                                <li v-for="item in details.imglist" :key="item.id">
+                                                    <div class="small-img">
+                                                        <img :src="item.original_path" />
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--缩略图-->
+                                    </div>
+                                    <div class="magnifier-view"></div>
+                                    <!--经过放大的图片显示容器-->
+                                </div>
                             </div>
                             <!--/商品图片-->
 
@@ -50,8 +76,8 @@
                                 <div class="spec-box">
                                     <dl>
                                         <dt>购买数量</dt>
+                                         <el-input-number  size="mini" v-model="num"></el-input-number>
                                         <dd>
-                                           <el-input-number min="1" size="mini" v-model="num"></el-input-number>
                                             <span class="stock-txt">
                                                 库存
                                                 <em id="commodityStockNum">{{details.goodsinfo.stock_quantity}}</em>件
@@ -61,8 +87,8 @@
                                     <dl>
                                         <dd>
                                             <div class="btn-buy" id="buyButton">
-                                                <button class="buy" onclick="cartAdd(this,'/',1,'/shopping.html');">立即购买</button>
-                                                <button class="add" onclick="cartAdd(this,'/',0,'/cart.html');">加入购物车</button>
+                                                <button class="buy">立即购买</button>
+                                                <button class="add">加入购物车</button>
                                             </div>
                                         </dd>
                                     </dl>
@@ -74,31 +100,18 @@
 
                         <div id="goodsTabs" class="goods-tab bg-wrap">
                             <!--选项卡-->
-                            <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
-                                <ul>
-                                    <li>
-                                        <a class="selected" href="javascript:;">商品介绍</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;" class="">商品评论</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--/选项卡-->
+                           <el-tabs type="border-card">
 
-                            <!--选项内容-->
-                            <div class="tab-content entry" style="display:block;">
-                                内容
-                            </div>
+                                <el-tab-pane label="商品介紹">
+                                    <div v-html="details.goodsinfo.content"></div>
+                                </el-tab-pane>
 
-                            <div class="tab-content" style="display: block;">
-                                <!--网友评论-->
-                                <common-comment></common-comment>
-                                <!--/网友评论-->
-                            </div>
+                                <el-tab-pane label="商品評論">
+                                    <common-comment></common-comment>
+                                </el-tab-pane>
 
+                            </el-tabs>
                         </div>
-
                     </div>
                     <!--/页面左边-->
 
@@ -115,6 +128,11 @@
 
     import CommonComment from './subcom/CommonComment.vue'
     import AppAside from './subcom/CommonAside.vue'
+
+    import '@/assets/lib/imgzoom/css/magnifier.css'
+    import '@/assets/lib/imgzoom/js/magnifier.js'
+
+    import $ from 'jquery'
 
 export default {
     data () {
@@ -143,6 +161,36 @@ export default {
     },
     created () {
         this.getDetails();
+    },
+    //视图被挂载到页面上执行
+    mounted () {
+        
+      
+	    
+
+
+    },
+    //监听id的变化
+    watch: {
+        $route(){
+            this.id = this.$route.params.id;
+            this.getDetails();
+        },
+
+        //监听detail的数据变化，数据变化后重新调用初始化方法
+        details(){
+              var magnifierConfig = {
+		magnifier : "#magnifier1",//最外层的大容器
+		width : 370,//承载容器宽
+		height : 370,//承载容器高
+		moveWidth : null,//如果设置了移动盒子的宽度，则不计算缩放比例
+		zoom : 3//缩放比例
+	};
+
+        setTimeout(function(){
+            var _magnifier = $().imgzoon(magnifierConfig);
+        },100)
+        }
     }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div>                  
         <div class="comment-box">
             <!--取得评论总数-->
             <form id="commentForm" name="commentForm" class="form-box" url="/tools/submit_ajax.ashx?action=comment_add&amp;channel_id=2&amp;article_id=98">
@@ -20,7 +20,7 @@
             <ul id="commentList" class="list-box">
                 <p style="margin:5px 0 15px 69px;line-height:42px;text-align:center;border:1px solid #f7f7f7;">暂无评论，快来抢沙发吧！</p>
 
-                <!-- <li>
+                <li>
                     <div class="avatar-box">
                         <i class="iconfont icon-user-full"></i>
                     </div>
@@ -31,16 +31,16 @@
                         </div>
                         <p>很清晰调动单很清晰调动单</p>
                     </div>
-                </li> -->
+                </li>
             </ul>
             <!--放置页码-->
-            <div class="page-box" style="margin:5px 0 0 62px">
+            <!-- <div class="page-box" style="margin:5px 0 0 62px">
                 <div id="pagination" class="digg">
                     <span class="disabled">« 上一页</span>
                     <span class="current">1</span>
                     <span class="disabled">下一页 »</span>
                 </div>
-            </div>
+            </div> -->
             <!--/放置页码-->
         </div>
     </div>
