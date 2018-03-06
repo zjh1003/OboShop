@@ -16,7 +16,7 @@ Vue.use(Router)
 // 子组件
 const goods = [
   { name:'list', path:'list', component:List },
-  { name:'detail', path:'detail', component:Detail }
+  { name:'detail', path:'detail/:id', component:Detail }
 ]
 
 const pay = [
