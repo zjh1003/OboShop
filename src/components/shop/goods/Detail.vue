@@ -159,7 +159,7 @@ export default {
     //添加购物车
     addCart() {
       //当前的数量加上以前的数量
-      let newNum = this.num + (this.$store.state.cart[this.is] || 0);
+      let newNum = this.num + (this.$store.state.cart[this.id] || 0);
       this.$store.commit("modify", { id: this.id, num: newNum });
       //加完之后重置为0
       this.num = 0;

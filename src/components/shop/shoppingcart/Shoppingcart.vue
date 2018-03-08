@@ -103,8 +103,8 @@
                     <!--购物车底部-->
                     <div class="cart-foot clearfix">
                         <div class="right-box">
-                            <button class="button">继续购物</button>
-                            <button class="submit">立即结算</button>
+                            <button @click="$router.go(-1)" class="button">继续购物</button>
+                            <button @click="pay" class="submit">立即结算</button>
                         </div>
                     </div>
 
@@ -146,6 +146,13 @@
                 this.goodsList = this.goodsList.filter(v => v.id != id);//返回不用删除的
 
                 this.$store.commit('del',id);
+            },
+            //支付按钮
+            pay(){
+                //拿到要购买的商品的id
+                let ids = this.goodsList.filter(v => v.selected).map(v => v.id);
+                //把商品id传递到下个页面使用，把ids转换成字符串再传递
+                this.$router.push({ name:'address', params:{ ids: ids.join(',') } })
             }
         },
         //计算属性
