@@ -49,7 +49,7 @@
                             <!--/商品图片-->
 
                             <!--商品信息-->
-                            <div  class="goods-spec">
+                            <div class="goods-spec">
                                 <h1>{{details.goodsinfo.title}}</h1>
                                 <p class="subtitle">{{details.goodsinfo.sub_title}}</p>
                                 <div class="spec-box">
@@ -74,7 +74,7 @@
                                 <div class="spec-box">
                                     <dl>
                                         <dt>购买数量</dt>
-                                         <el-input-number :min="1" size="mini" v-model="num"></el-input-number>
+                                        <el-input-number :min="1" size="mini" v-model="num"></el-input-number>
                                         <dd>
                                             <span class="stock-txt">
                                                 库存
@@ -98,7 +98,7 @@
 
                         <div id="goodsTabs" class="goods-tab bg-wrap">
                             <!--选项卡-->
-                           <el-tabs type="border-card">
+                            <el-tabs type="border-card">
 
                                 <el-tab-pane label="商品介紹">
                                     <div v-html="details.goodsinfo.content"></div>
@@ -123,79 +123,75 @@
 </template>
 
 <script>
+import CommonComment from "./subcom/CommonComment.vue";
+import AppAside from "./subcom/CommonAside.vue";
 
-    import CommonComment from './subcom/CommonComment.vue'
-    import AppAside from './subcom/CommonAside.vue'
+import "@/assets/lib/imgzoom/css/magnifier.css";
+import "@/assets/lib/imgzoom/js/magnifier.js";
 
-    import '@/assets/lib/imgzoom/css/magnifier.css'
-    import '@/assets/lib/imgzoom/js/magnifier.js'
-
-    import $ from 'jquery'
+import $ from "jquery";
 
 export default {
-    data () {
-        return {
-            id:this.$route.params.id,
-            num:1,
-            details:{
-                goodsinfo:{},
-                imglist:[],
-                hotgoodslist:[]
-            }
+  data() {
+    return {
+      id: this.$route.params.id,
+      num: 1,
+      details: {
+        goodsinfo: {},
+        imglist: [],
+        hotgoodslist: []
+      }
+    };
+  },
+  components: {
+    CommonComment,
+    AppAside
+  },
+  methods: {
+    getDetails() {
+      this.$http.get(this.$api.goodsDetail + this.id).then(res => {
+        if (res.data.status == 0) {
+          this.details = res.data.message;
+          //    console.log(this.details.goodsinfo.id);
         }
+      });
     },
-    components: {
-        CommonComment,
-        AppAside
-    },
-    methods: {
-       getDetails(){
-           this.$http.get(this.$api.goodsDetail+this.id).then(res => {
-               if(res.data.status == 0){
-                   this.details = res.data.message;
-                //    console.log(this.details.goodsinfo.id);
-                   
-               }
-           })
-       },
-       //添加购物车
-       addCart(){
-           this.$store.commit('modify',{ id: this.id, num: this.num })
-       }
-    },
-    created () {
-        this.getDetails();
-    },
-    //视图被挂载到页面上执行
-    mounted () {
-        
-      
-	    
-
-
-    },
-    //监听id的变化
-    watch: {
-        $route(){
-            this.id = this.$route.params.id;
-            this.getDetails();
-        },
-
-        //监听detail的数据变化，数据变化后重新调用初始化方法
-        details(){
-              var magnifierConfig = {
-		magnifier : "#magnifier1",//最外层的大容器
-		width : 370,//承载容器宽
-		height : 370,//承载容器高
-		moveWidth : null,//如果设置了移动盒子的宽度，则不计算缩放比例
-		zoom : 3//缩放比例
-	};
-
-        setTimeout(function(){
-            var _magnifier = $().imgzoon(magnifierConfig);
-        },100)
-        }
+    //添加购物车
+    addCart() {
+      //当前的数量加上以前的数量
+      let newNum = this.num + (this.$store.state.cart[this.is] || 0);
+      this.$store.commit("modify", { id: this.id, num: newNum });
+      //加完之后重置为0
+      this.num = 0;
     }
+  },
+  created() {
+    this.getDetails();
+  },
+  //视图被挂载到页面上执行
+  mounted() {},
+  //监听id的变化
+  watch: {
+    $route() {
+      this.id = this.$route.params.id;
+      this.getDetails();
+    },
+
+    //监听detail的数据变化，数据变化后重新调用初始化方法
+    details() {
+      var magnifierConfig = {
+        magnifier: "#magnifier1", //最外层的大容器
+        width: 370, //承载容器宽
+        height: 370, //承载容器高
+        moveWidth: null, //如果设置了移动盒子的宽度，则不计算缩放比例
+        zoom: 3 //缩放比例
+      };
+
+      setTimeout(function() {
+        var _magnifier = $().imgzoon(magnifierConfig);
+      }, 100);
+    }
+  }
 };
 </script>
 

@@ -4,7 +4,7 @@
         <div class="section">
             <div class="location">
                 <span>当前位置：</span>
-                <router-link to="/">首页</router-link>&gt;
+                <router-link :to="{name:'list'}">首页</router-link>&gt;
                 <router-link to="">购物车</router-link>
             </div>
         </div>
@@ -65,13 +65,13 @@
                                         ￥{{item.sell_price}}
                                     </th>
                                     <th width="104" align="center">
-                                        <el-input-number size="mini" :min="1" ></el-input-number>
+                                        <el-input-number v-model="$store.state.cart[item.id]" size="mini" :min="1" ></el-input-number>
                                     </th>
                                     <th width="104" align="left">
                                         <td>￥{{item.sell_price * $store.state.cart[item.id]}}</td>
                                     </th>
                                     <th width="54" align="center">
-                                        <el-button size="mini">删除</el-button>
+                                        <el-button @click="del(item.id)" size="mini">删除</el-button>
                                     </th>
                                 </tr>
 
@@ -139,6 +139,13 @@
             changeAll(newState){
                  // 监听全选按钮的点击事件, 得到新的状态值, 然后遍历所有商品依次设为新的状态
                  this.goodsList.forEach(v => v.selected = newState)
+            },
+            //删除
+            del(id){
+                //先从goodsList里删除，再从全局cart状态里删除
+                this.goodsList = this.goodsList.filter(v => v.id != id);//返回不用删除的
+
+                this.$store.commit('del',id);
             }
         },
         //计算属性
