@@ -4,10 +4,8 @@
         <div class="section">
             <div class="location">
                 <span>当前位置：</span>
-                <a href="/index.html">首页</a> &gt;
-                <a href="/goods.html">购物商城</a>
-                <a href="/goods/42/1.html">商品详情</a>
-
+                <router-link :to="{name:'list'}">首页 ></router-link>
+                <router-link :to="{name:'detail'}">商品详情</router-link>
             </div>
         </div>
 
@@ -76,7 +74,7 @@
                                 <div class="spec-box">
                                     <dl>
                                         <dt>购买数量</dt>
-                                         <el-input-number  size="mini" v-model="num"></el-input-number>
+                                         <el-input-number :min="1" size="mini" v-model="num"></el-input-number>
                                         <dd>
                                             <span class="stock-txt">
                                                 库存
@@ -88,7 +86,7 @@
                                         <dd>
                                             <div class="btn-buy" id="buyButton">
                                                 <button class="buy">立即购买</button>
-                                                <button class="add">加入购物车</button>
+                                                <button class="add" @click="addCart">加入购物车</button>
                                             </div>
                                         </dd>
                                     </dl>
@@ -107,7 +105,7 @@
                                 </el-tab-pane>
 
                                 <el-tab-pane label="商品評論">
-                                    <common-comment></common-comment>
+                                    <common-comment :id="id"></common-comment>
                                 </el-tab-pane>
 
                             </el-tabs>
@@ -155,8 +153,14 @@ export default {
            this.$http.get(this.$api.goodsDetail+this.id).then(res => {
                if(res.data.status == 0){
                    this.details = res.data.message;
+                //    console.log(this.details.goodsinfo.id);
+                   
                }
            })
+       },
+       //添加购物车
+       addCart(){
+           this.$store.commit('modify',{ id: this.id, num: this.num })
        }
     },
     created () {

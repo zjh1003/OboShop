@@ -24,8 +24,12 @@ Vue.prototype.$http = axios
 Vue.prototype.$api = api
 
 import 'normalize.css'
+import Vuex from 'vuex'
 //使用element-ui
 Vue.use(ElementUI)
+
+Vue.use(Vuex)
+import storeCart from './store/cart.js'
 
 import './less/index.less'
 
@@ -38,5 +42,6 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  store: new Vuex.Store(storeCart)
 })
